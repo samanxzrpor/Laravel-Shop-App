@@ -1,0 +1,42 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('pro_meta', function (Blueprint $table) {
+            $table->id();
+            $table->integer('width')->nullable();
+            $table->integer('height')->nullable();
+            $table->integer('weight')->nullable();
+            $table->enum('quality' , ['YES' , 'NO'])->default('YES');
+            $table->integer('receive_duration');
+            $table->foreignId('pro_id')
+                ->constrained('products' , 'id')
+                ->cascadeOnDelete();
+            $table->foreignId('wish_id')
+                ->constrained('wishlists' , 'id')
+                ->cascadeOnDelete();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('pro_meta');
+    }
+};
