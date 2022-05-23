@@ -4,8 +4,10 @@ namespace App\Http\Controllers\API\Admin\Users;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Http\Request;
+use \Illuminate\Support\Facades\Response as JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+
+
 
 class UserController extends Controller
 {
@@ -18,7 +20,7 @@ class UserController extends Controller
     {
         $users = User::orderByDesc('created_at')->paginate(20);
 
-        return response()->json([
+        return JsonResponse::json([
             'users' => $users,
         ] , Response::HTTP_OK);
     }
@@ -34,7 +36,7 @@ class UserController extends Controller
     {
         $user->delete();
 
-        return response()->json([
+        return JsonResponse::json([
             'message' => 'User deleted successfully',
         ] , Response::HTTP_OK);
     }

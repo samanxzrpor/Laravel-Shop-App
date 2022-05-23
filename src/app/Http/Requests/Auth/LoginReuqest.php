@@ -2,16 +2,17 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Http\Requests\RequestInterface;
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginReuqest extends FormRequest
+class LoginReuqest extends FormRequest implements RequestInterface
 {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize() : bool
     {
         return true;
     }
@@ -21,11 +22,11 @@ class LoginReuqest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
+    public function rules() : array
     {
         return [
-            'email' => 'required|email',
-            'password' => 'required|min:8'
+            'email' => ['required','email'],
+            'password' => ['required','min:8']
         ];
     }
 }

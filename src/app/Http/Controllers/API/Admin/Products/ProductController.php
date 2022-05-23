@@ -3,34 +3,39 @@
 namespace App\Http\Controllers\API\Admin\Products;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\API\Admin\Products\StoreProductRequest;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
 
 class ProductController extends Controller
 {
     /**
      * Display a listing of the Products.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        return Product::orderByDesc('created_at')->paginate(20);
+        $products = Product::orderByDesc('created_at')->paginate(20);
+
+        return Response::json();
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created Product in Database.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreProductRequest $request)
     {
-
+        $this->storeProduct($request);
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified Product Data.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -62,4 +67,6 @@ class ProductController extends Controller
     {
         //
     }
+
+
 }
