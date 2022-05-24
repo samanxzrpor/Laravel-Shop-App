@@ -5,33 +5,49 @@ namespace App\Http\Controllers\API\Admin\Products;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\Admin\Products\StoreProductRequest;
 use App\Models\Product;
+use App\Repositories\RepositoriesInterface;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use \Symfony\Component\HttpFoundation\Response as StatusResponse;
 use Illuminate\Support\Facades\Response;
 
 class ProductController extends Controller
 {
+
+    private RepositoriesInterface $productRepository;
+
+    public function __construct(RepositoriesInterface $productRepository)
+    {
+        $this->productRepository = $productRepository;
+    }
     /**
      * Display a listing of the Products.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function index()
     {
         $products = Product::orderByDesc('created_at')->paginate(20);
 
-        return Response::json();
+        return Response::json([
+            'products' => $products
+        ] , StatusResponse::HTTP_OK);
     }
 
     /**
      * Store a newly created Product in Database.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  StoreProductRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreProductRequest $request)
     {
-        $this->storeProduct($request);
+        # Store Product Data and files in Database
+        $product = $this->productRepository->store($request);
+
+        return Response::json([
+            'product' => $product
+        ] , StatusResponse::HTTP_CREATED);
     }
 
     /**
@@ -40,7 +56,7 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Product $product)
     {
 
     }
@@ -52,7 +68,7 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Product $product)
     {
         //
     }
@@ -63,7 +79,7 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Product $product)
     {
         //
     }

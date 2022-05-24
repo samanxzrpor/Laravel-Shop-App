@@ -4,23 +4,25 @@ namespace App\Http\Controllers\API\Admin\Users;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use \Illuminate\Support\Facades\Response as JsonResponse;
+use Illuminate\Http\JsonResponse;
+use \Illuminate\Support\Facades\Response as StatusResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 
 
 class UserController extends Controller
 {
+
     /**
      * Display a listing of the Users in Admin Panel.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function index()
     {
         $users = User::orderByDesc('created_at')->paginate(20);
 
-        return JsonResponse::json([
+        return StatusResponse::json([
             'users' => $users,
         ] , Response::HTTP_OK);
     }
@@ -29,14 +31,14 @@ class UserController extends Controller
     /**
      * Remove the specified User from Database.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @param User $user
+     * @return JsonResponse
      */
     public function destroy(User $user)
     {
         $user->delete();
 
-        return JsonResponse::json([
+        return StatusResponse::json([
             'message' => 'User deleted successfully',
         ] , Response::HTTP_OK);
     }

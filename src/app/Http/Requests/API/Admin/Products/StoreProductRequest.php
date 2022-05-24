@@ -31,8 +31,9 @@ class StoreProductRequest extends FormRequest implements RequestInterface
             'short_desc' => ['required' , 'min:50' , 'max:524'],
             'description' => ['required' , 'min:100'],
             'cat_id' => ['required' , 'exists:App\Models\Category,id'],
+            'brand_id' => ['required' , 'exists:App\Models\Brand,id'],
             'thumbnail_file' => ['required' , 'image'],
-            'gallery_file' => ['required']
+            'gallery_file' => ['required' , 'array']
         ];
     }
 }

@@ -32,6 +32,9 @@ return new class extends Migration
             $table->foreignId('cat_id')
                 ->constrained('categories')
                 ->cascadeOnUpdate();
+            $table->foreignId('brand_id')
+                ->constrained()
+                ->cascadeOnUpdate();
 
             $table->timestamps();
         });

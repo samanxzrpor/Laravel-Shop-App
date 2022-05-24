@@ -25,4 +25,7 @@ Route::prefix('admin')
 
         # Admin Dashboard Processing
         include __DIR__ . '/admin/user_routes.php';
+
+        # Admin Dashboard Processing
+        include __DIR__ . '/admin/product_routes.php';
     });

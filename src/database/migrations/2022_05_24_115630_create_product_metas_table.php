@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('pro_meta', function (Blueprint $table) {
+        Schema::create('product_metas', function (Blueprint $table) {
             $table->id();
             $table->integer('width')->nullable();
             $table->integer('height')->nullable();
@@ -37,6 +37,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pro_meta');
+        Schema::dropIfExists('product_metas');
     }
 };

@@ -8,15 +8,15 @@ use Tests\TestCase;
 class UserTest extends TestCase
 {
     use RefreshDatabase;
+
     /**
-     * A basic test example.
-     *
      * @return void
      */
     public function testGetAllUser()
     {
-        $response = $this->get('/');
-
+        $response = $this->authentication()->get(route('users.index'));
         $response->assertStatus(200);
     }
+
+
 }
