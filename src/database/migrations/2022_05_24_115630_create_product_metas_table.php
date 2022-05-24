@@ -15,17 +15,18 @@ return new class extends Migration
     {
         Schema::create('product_metas', function (Blueprint $table) {
             $table->id();
+
             $table->integer('width')->nullable();
             $table->integer('height')->nullable();
             $table->integer('weight')->nullable();
-            $table->enum('quality' , ['YES' , 'NO'])->default('YES');
             $table->integer('receive_duration');
+
+            $table->enum('quality' , ['YES' , 'NO'])->default('YES');
+
             $table->foreignId('pro_id')
                 ->constrained('products' , 'id')
                 ->cascadeOnDelete();
-            $table->foreignId('wish_id')
-                ->constrained('wishlists' , 'id')
-                ->cascadeOnDelete();
+
             $table->timestamps();
         });
     }

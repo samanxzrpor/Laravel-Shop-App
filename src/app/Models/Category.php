@@ -12,4 +12,19 @@ class Category extends Model
     protected $fillable = [
         'title'
     ];
+
+    public function blogs()
+    {
+        return $this->belongsToMany(Blog::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function product()
+    {
+        return $this->hasMany(Product::class);
+    }
 }

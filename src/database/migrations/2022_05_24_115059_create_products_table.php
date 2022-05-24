@@ -29,12 +29,18 @@ return new class extends Migration
             $table->foreignId('user_id')
                 ->constrained()
                 ->cascadeOnDelete();
+
             $table->foreignId('cat_id')
                 ->constrained('categories')
                 ->cascadeOnUpdate();
+
             $table->foreignId('brand_id')
                 ->constrained()
                 ->cascadeOnUpdate();
+
+            $table->foreignId('wish_id')
+                ->constrained('wishlists' , 'id')
+                ->cascadeOnDelete();
 
             $table->timestamps();
         });
