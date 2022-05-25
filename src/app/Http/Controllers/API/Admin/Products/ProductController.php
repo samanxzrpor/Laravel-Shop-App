@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\Admin\Products;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\Admin\Products\StoreProductRequest;
+use App\Http\Requests\API\Admin\Products\UpdateProductRequest;
 use App\Models\Product;
 use App\Repositories\RepositoriesInterface;
 use Illuminate\Http\JsonResponse;
@@ -38,7 +39,7 @@ class ProductController extends Controller
      * Store a newly created Product in Database.
      *
      * @param  StoreProductRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function store(StoreProductRequest $request)
     {
@@ -53,28 +54,30 @@ class ProductController extends Controller
     /**
      * Display the specified Product Data.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  Product $product
+     * @return JsonResponse
      */
     public function show(Product $product)
     {
-
+        return Response::json([
+            'product' => $product
+        ] , StatusResponse::HTTP_OK);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified Product in Database.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param UpdateProductRequest $request
+     * @param Product $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(UpdateProductRequest $request, Product $product)
     {
-        //
+        $this->productRepository->update($request, $product);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified Product from Database.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
