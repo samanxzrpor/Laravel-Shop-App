@@ -23,9 +23,12 @@ Route::prefix('admin')
     ->middleware(['auth:sanctum'])
     ->group(function (){
 
-        # Admin Dashboard Processing
+        # Admin User Dashboard Processing
         include __DIR__ . '/admin/user_routes.php';
 
-        # Admin Dashboard Processing
+        # Admin Product Dashboard Processing
         include __DIR__ . '/admin/product_routes.php';
+
+        # Admin Blogs Dashboard Processing
+        include __DIR__ . '/admin/blogs_routes.php';
     });

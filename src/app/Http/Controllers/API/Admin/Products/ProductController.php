@@ -6,29 +6,31 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\API\Admin\Products\StoreProductRequest;
 use App\Http\Requests\API\Admin\Products\UpdateProductRequest;
 use App\Models\Product;
-use App\Repositories\RepositoriesInterface;
+use App\Repositories\Admin\Product\ProductRepositoryInterface;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use \Symfony\Component\HttpFoundation\Response as StatusResponse;
 use Illuminate\Support\Facades\Response;
+
 
 class ProductController extends Controller
 {
 
-    private RepositoriesInterface $productRepository;
+    private ProductRepositoryInterface $productRepository;
 
-    public function __construct(RepositoriesInterface $productRepository)
+
+    public function __construct(ProductRepositoryInterface $productRepository)
     {
         $this->productRepository = $productRepository;
     }
+
     /**
      * Display a listing of the Products.
      *
      * @return JsonResponse
      */
-    public function index()
+    public function index(): JsonResponse
     {
-        $products = Product::orderByDesc('created_at')->paginate(20);
+        $products = $this->productRepository->all();
 
         return Response::json([
             'products' => $products
@@ -59,6 +61,8 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
+        $product = $this->productRepository->findBySlug($product->slug);
+
         return Response::json([
             'product' => $product
         ] , StatusResponse::HTTP_OK);
@@ -69,22 +73,30 @@ class ProductController extends Controller
      *
      * @param UpdateProductRequest $request
      * @param Product $product
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
         $this->productRepository->update($request, $product);
+
+        return Response::json([
+            'message' => 'Product updated successfully'
+        ] , StatusResponse::HTTP_OK);
     }
 
     /**
      * Remove the specified Product from Database.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Product $product
+     * @return JsonResponse
      */
     public function destroy(Product $product)
     {
-        //
+        $product->delete();
+
+        return Response::json([
+            'message' => 'Product deleted successfully'
+        ] , StatusResponse::HTTP_OK);
     }
 
 

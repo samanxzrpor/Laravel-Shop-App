@@ -5,9 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProMeta extends Model
+class ProductMeta extends Model
 {
     use HasFactory;
+
+    protected $table = 'product_metas';
 
     protected $guarded = [
         'id'
@@ -17,4 +19,6 @@ class ProMeta extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
 }
+

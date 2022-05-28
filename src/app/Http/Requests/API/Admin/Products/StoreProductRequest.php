@@ -33,7 +33,12 @@ class StoreProductRequest extends FormRequest implements RequestInterface
             'cat_id' => ['required' , 'exists:App\Models\Category,id'],
             'brand_id' => ['required' , 'exists:App\Models\Brand,id'],
             'thumbnail_file' => ['required' , 'image'],
-            'gallery_file' => ['required' , 'array']
+            'gallery_file' => ['required' , 'array'],
+            'width' => ['nullable' , 'numeric'],
+            'height' => ['nullable' , 'numeric'],
+            'weight' => ['nullable' , 'numeric'],
+            'receive_duration' => ['nullable' , 'numeric'],
+            'quality' => ['in:YES,NO']
         ];
     }
 }

@@ -20,7 +20,7 @@ return new class extends Migration
 
             $table->text('body');
 
-            $table->integer('view');
+            $table->integer('view')->nullable()->default(0);
 
             $table->foreignId('user_id')
                 ->constrained()

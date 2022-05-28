@@ -13,6 +13,7 @@ class Product extends Model
         'id'
     ];
 
+
     public function tags()
     {
         return $this->morphToMany(Tag::class , 'taggable');
@@ -36,5 +37,10 @@ class Product extends Model
     public function reviews()
     {
         return $this->hasMany(Review::class);
+    }
+
+    public function productMeta()
+    {
+        return $this->hasOne(ProductMeta::class);
     }
 }

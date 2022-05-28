@@ -23,7 +23,7 @@ return new class extends Migration
 
             $table->text('description');
             $table->text('gallery_url');
-            $table->integer('count');
+            $table->integer('count')->default(0);
             $table->decimal('price' , 8 ,2);
 
             $table->foreignId('user_id')
@@ -37,10 +37,6 @@ return new class extends Migration
             $table->foreignId('brand_id')
                 ->constrained()
                 ->cascadeOnUpdate();
-
-            $table->foreignId('wish_id')
-                ->constrained('wishlists' , 'id')
-                ->cascadeOnDelete();
 
             $table->timestamps();
         });

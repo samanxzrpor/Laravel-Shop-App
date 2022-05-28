@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
-use App\Repositories\Admin\ProductRepository;
+use App\Repositories\Admin\Blog\BlogRepository;
+use App\Repositories\Admin\Blog\BlogRepositoryInterface;
+use App\Repositories\Admin\Product\ProductRepository;
+use App\Repositories\Admin\Product\ProductRepositoryInterface;
 use App\Repositories\RepositoriesInterface;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,6 +28,7 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app->bind(RepositoriesInterface::class , ProductRepository::class);
+        $this->app->bind(BlogRepositoryInterface::class , BlogRepository::class);
+        $this->app->bind(ProductRepositoryInterface::class , ProductRepository::class);
     }
 }
