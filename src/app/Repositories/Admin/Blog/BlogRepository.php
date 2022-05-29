@@ -12,20 +12,36 @@ class BlogRepository implements BlogRepositoryInterface
 {
 
 
-    public function store(RequestInterface $request): Model
+    public function store(RequestInterface $request): Blog
     {
         $fields = $request->validated();
 
-        return Blog::create([
+        $blog = Blog::create([
             'title' => $fields['title'],
             'slug' => Str::slug($fields['title']),
             'body' => $fields['body'],
             'user_id' => Auth::user()->id,
         ]);
+
+        $blog->categories()->sync($fields['cat_ids']);
+        return $blog;
     }
 
-    public function update(RequestInterface $request, Model $model): void
+    public function findBySlug(string $slug)
     {
-        // TODO: Implement update() method.
+        return Blog::where('slug', $slug)->first();
+    }
+
+    public function update(RequestInterface $request, Blog $blog): void
+    {
+        $fields = $request->validated();
+
+        $blog->update([
+            'title' => $fields['title'],
+            'slug' => Str::slug($fields['title']),
+            'body' => $fields['body'],
+        ]);
+
+        $blog->categories()->sync($fields['cat_ids']);
     }
 }

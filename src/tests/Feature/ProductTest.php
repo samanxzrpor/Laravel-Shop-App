@@ -9,6 +9,7 @@ use App\Models\ProductMeta;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class ProductTest extends TestCase
@@ -16,12 +17,34 @@ class ProductTest extends TestCase
 
     use RefreshDatabase;
 
-    /**
-     * @throws \JsonException
-     */
+
+    public function testCreateProductWhenUserNotUnauthorized()
+    {
+        $category = Category::create([
+            'title' => 'New Category'
+        ]);
+
+        $brand = Brand::create([
+            'name' => 'New brand'
+        ]);
+
+        $this->postJson(route('products.store') , [
+            'title' => 'The New Product in Laravel testing',
+            'price' => 15000 ,
+            'count' => 10 ,
+            'short_desc' => 'The New Product in Laravel testing The New Product i n Laravel testing The New Product in Laravel testing' ,
+            'description' => 'The New Product in Laravel testing The New Product in Lara The New Product in Laravel testing The New Product in Laravel testing The New Product in Laravel testing',
+            'cat_id' => $category->id ,
+            'brand_id' => $brand->id ,
+            'thumbnail_file' => $this->uploadFile() ,
+            'gallery_file' => [$this->uploadFile()],
+        ], ['Accept' => 'application/json'])
+            ->assertStatus(401);
+
+    }
+
     public function testCreateNewProductWithTrustedFile(): void
     {
-        $this->withoutExceptionHandling();
         $this->authentication();
 
         $category = Category::create([
@@ -80,7 +103,7 @@ class ProductTest extends TestCase
     }
 
 
-    public function testCreateNewProductWithoutTrustedData(): void
+    public function testAllRoleValidationInRequest(): void
     {
         $this->authentication();
 
@@ -96,17 +119,25 @@ class ProductTest extends TestCase
             'title' => 'testing',
             'price' => 15000 ,
             'count' => 10 ,
-            'short_desc' => 'The New Product in Laravel testing The New Product i n Laravel testing The New Product in Laravel testing' ,
-            'description' => 'The New Product in Laravel testing The New Product in Lara The New Product in Laravel testing The New Product in Laravel testing The New Product in Laravel testing',
-            'cat_id' => $category->id ,
-            'brand_id' => $brand->id ,
+            'short_desc' => '' ,
+            'description' => 't in Laravel testing',
+            'cat_id' => '' ,
+            'brand_id' => '' ,
             'thumbnail_file' =>'' ,
             'gallery_file' => '',
         ], ['Accept' => 'application/json']);
 
         $this->assertDatabaseMissing('products' , ['testing']);
-        $response->assertJsonValidationErrorFor('title');
-        $response->assertJsonValidationErrorFor('thumbnail_file');
+
+        $response->assertJsonValidationErrors([
+            'thumbnail_file',
+            'title',
+            'short_desc',
+            'description',
+            'gallery_file',
+            'brand_id',
+            'cat_id'
+        ]);
     }
 
     public function testSerachProductBySlug()

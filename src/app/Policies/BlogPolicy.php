@@ -6,7 +6,7 @@ use App\Models\Blug;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class BlugPolicy
+class BlogPolicy
 {
     use HandlesAuthorization;
 

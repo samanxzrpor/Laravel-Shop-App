@@ -3,11 +3,11 @@
 namespace App\Repositories\Admin\Blog;
 
 use App\Http\Requests\RequestInterface;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Blog;
 
 interface BlogRepositoryInterface
 {
-    public function store(RequestInterface $request): Model;
+    public function store(RequestInterface $request): Blog;
 
-    public function update(RequestInterface $request, Model $model): void;
+    public function update(RequestInterface $request, Blog $blog): void;
 }

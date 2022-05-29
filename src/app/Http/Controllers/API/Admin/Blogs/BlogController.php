@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\Admin\Blogs;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\Admin\Blogs\StoreBlogRequest;
+use App\Http\Requests\API\Admin\Blogs\UpdateBlogRequest;
 use App\Models\Blog;
 use App\Repositories\Admin\Blog\BlogRepositoryInterface;
 use App\Repositories\RepositoriesInterface;
@@ -56,34 +57,46 @@ class BlogController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return Response
+     * @param Blog $blog
+     * @return JsonResponse
      */
-    public function show($id)
+    public function show(Blog $blog): JsonResponse
     {
-        //
+        $blog = $this->blogRepository->findBySlug($blog->slug);
+
+        return Response::json([
+            'blog' => $blog,
+        ] , StatusResponse::HTTP_OK);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param  int  $id
-     * @return Response
+     * @param UpdateBlogRequest $request
+     * @param Blog $blog
+     * @return JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(UpdateBlogRequest $request, Blog $blog)
     {
-        //
+        $this->blogRepository->update($request , $blog);
+
+        return Response::json([
+            'message' => 'Blog updated successfully' ,
+        ] , StatusResponse::HTTP_OK);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return Response
+     * @param Blog $blog
+     * @return JsonResponse
      */
-    public function destroy($id)
+    public function destroy(Blog $blog)
     {
-        //
+        $blog->delete();
+
+        return Response::json([
+            'message' => 'Blog deleted successfully'
+        ] , StatusResponse::HTTP_OK);
     }
 }
