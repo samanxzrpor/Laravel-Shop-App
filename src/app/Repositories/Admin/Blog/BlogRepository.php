@@ -12,6 +12,15 @@ class BlogRepository implements BlogRepositoryInterface
 {
 
 
+    /**
+     * @return mixed
+     */
+    public function all() :mixed
+    {
+        return Blog::orderByDesc('created_at')->paginate(20);
+    }
+
+
     public function store(RequestInterface $request): Blog
     {
         $fields = $request->validated();
@@ -27,10 +36,12 @@ class BlogRepository implements BlogRepositoryInterface
         return $blog;
     }
 
-    public function findBySlug(string $slug)
+
+    public function findBySlug(string $slug) : Blog
     {
         return Blog::where('slug', $slug)->first();
     }
+
 
     public function update(RequestInterface $request, Blog $blog): void
     {
@@ -44,4 +55,5 @@ class BlogRepository implements BlogRepositoryInterface
 
         $blog->categories()->sync($fields['cat_ids']);
     }
+
 }

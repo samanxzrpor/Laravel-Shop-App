@@ -7,23 +7,23 @@ use App\Http\Requests\API\Admin\Blogs\StoreBlogRequest;
 use App\Http\Requests\API\Admin\Blogs\UpdateBlogRequest;
 use App\Models\Blog;
 use App\Repositories\Admin\Blog\BlogRepositoryInterface;
-use App\Repositories\RepositoriesInterface;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Symfony\Component\HttpFoundation\Response as StatusResponse;
+
 
 
 class BlogController extends Controller
 {
 
-
     private BlogRepositoryInterface $blogRepository;
+
 
     public function __construct(BlogRepositoryInterface $blogRepository)
     {
         $this->blogRepository = $blogRepository;
     }
+
 
     /**
      * Display a listing of the Blogs.
@@ -32,12 +32,13 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $blogs = Blog::orderByDesc('created_at')->paginate(20);
+        $blogs = $this->blogRepository->all();
 
         return Response::json([
             'blogs' => $blogs,
         ] , StatusResponse::HTTP_OK);
     }
+
 
     /**
      * Store a newly created Blog in Database.
@@ -54,6 +55,7 @@ class BlogController extends Controller
         ] , StatusResponse::HTTP_CREATED);
     }
 
+
     /**
      * Display the specified resource.
      *
@@ -68,6 +70,7 @@ class BlogController extends Controller
             'blog' => $blog,
         ] , StatusResponse::HTTP_OK);
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -85,6 +88,7 @@ class BlogController extends Controller
         ] , StatusResponse::HTTP_OK);
     }
 
+
     /**
      * Remove the specified resource from storage.
      *
@@ -99,4 +103,5 @@ class BlogController extends Controller
             'message' => 'Blog deleted successfully'
         ] , StatusResponse::HTTP_OK);
     }
+
 }
