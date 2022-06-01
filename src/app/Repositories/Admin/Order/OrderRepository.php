@@ -10,7 +10,10 @@ class OrderRepository implements OrderRepositoryInterface
 
     public function all(string $orderBy = 'created_at')
     {
-        return Order::orderByDesc($orderBy)
+        return Order::with(['orderItems' => function ($query) {
+                $query->orderByDesc('price');
+            }])
+            ->orderByDesc($orderBy)
             ->paginate(20);
     }
 
