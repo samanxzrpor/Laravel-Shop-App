@@ -16,11 +16,14 @@ return new class extends Migration
         Schema::create('blogs', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('slug')->index();
+            $table->string('slug')
+                ->index();
 
             $table->text('body');
 
-            $table->integer('view')->nullable()->default(0);
+            $table->integer('view')
+                ->nullable()
+                ->default(0);
 
             $table->foreignId('user_id')
                 ->constrained()

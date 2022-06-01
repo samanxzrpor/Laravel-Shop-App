@@ -31,4 +31,10 @@ Route::prefix('admin')
 
         # Admin Blogs Dashboard Processing
         include __DIR__ . '/admin/blogs_routes.php';
+
+        # Admin Category Dashboard Processing
+        include __DIR__ . '/admin/category_routes.php';
+
+        # Admin Comments Dashboard Processing
+        include __DIR__ . '/admin/comment_routes.php';
     });

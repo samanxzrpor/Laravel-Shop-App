@@ -22,7 +22,8 @@ return new class extends Migration
             $table->foreignId('user_id')
                 ->constrained()
                 ->cascadeOnDelete();
-            $table->enum('ratting' , [1,2,3,4,5])->nullable();
+            $table->enum('ratting' , [1,2,3,4,5])
+                ->nullable();
             $table->timestamps();
         });
     }

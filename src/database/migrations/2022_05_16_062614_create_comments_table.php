@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
             $table->text('body');
+            $table->enum('block' , ['yes' , 'no'])
+                ->default('no');
             $table->string('commentable_type');
             $table->unsignedBigInteger('commentable_id');
             $table->timestamps();

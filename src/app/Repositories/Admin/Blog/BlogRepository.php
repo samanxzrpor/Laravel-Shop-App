@@ -23,6 +23,7 @@ class BlogRepository implements BlogRepositoryInterface
 
     public function store(RequestInterface $request): Blog
     {
+        $form = new Form
         $fields = $request->validated();
 
         $blog = Blog::create([

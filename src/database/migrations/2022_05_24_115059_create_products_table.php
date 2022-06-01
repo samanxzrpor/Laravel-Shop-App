@@ -17,13 +17,15 @@ return new class extends Migration
             $table->id();
 
             $table->string('title');
-            $table->string('slug')->index();
+            $table->string('slug')
+                ->index();
             $table->string('short_desc' , 524);
             $table->string('thumbnail_url');
 
             $table->text('description');
             $table->text('gallery_url');
-            $table->integer('count')->default(0);
+            $table->integer('count')
+                ->default(0);
             $table->decimal('price' , 8 ,2);
 
             $table->foreignId('user_id')

@@ -16,12 +16,18 @@ return new class extends Migration
         Schema::create('product_metas', function (Blueprint $table) {
             $table->id();
 
-            $table->float('width' , 8 ,2)->nullable();
-            $table->float('height' ,8 ,2)->nullable();
-            $table->float('weight' , 8 ,2)->nullable();
-            $table->integer('receive_duration')->nullable();
+            $table->float('width' , 8 ,2)
+                ->nullable();
+            $table->float('height' ,8 ,2)
+                ->nullable();
+            $table->float('weight' , 8 ,2)
+                ->nullable();
+            $table->integer('receive_duration')
+                ->nullable();
 
-            $table->enum('quality' , ['YES' , 'NO'])->nullable()->default('YES');
+            $table->enum('quality' , ['YES' , 'NO'])
+                ->nullable()
+                ->default('YES');
 
             $table->foreignId('product_id')
                 ->constrained()
