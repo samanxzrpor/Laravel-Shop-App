@@ -18,10 +18,12 @@ return new class extends Migration
 
             $table->enum('getaway' , ['ZARINPAL' , 'IDPAY']);
 
+            $table->integer('amount');
+
             $table->integer('res_id')
                 ->unique();
-            $table->integer('ref_id');
-
+            $table->integer('ref_id')
+                ->unique();
             $table->foreignId('user_id')
                 ->constrained();
 

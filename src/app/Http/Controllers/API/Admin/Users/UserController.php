@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\Admin\Users;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Repositories\Admin\User\UserRepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use \Illuminate\Support\Facades\Response as StatusResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,6 +14,14 @@ use Symfony\Component\HttpFoundation\Response;
 class UserController extends Controller
 {
 
+    private UserRepositoryInterface $userRepository;
+
+    public function __construct(UserRepositoryInterface $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
+
+
     /**
      * Display a listing of the Users in Admin Panel.
      *
@@ -20,7 +29,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::orderByDesc('created_at')->paginate(20);
+        $users = $this->userRepository->all($this->setOrderBy());
 
         return StatusResponse::json([
             'users' => $users,
@@ -40,6 +49,16 @@ class UserController extends Controller
 
         return StatusResponse::json([
             'message' => 'User deleted successfully',
+        ] , Response::HTTP_OK);
+    }
+
+
+    public function blockUser(User $user)
+    {
+        $this->userRepository->block($user);
+
+        return StatusResponse::json([
+            'message' => 'User Blocked successfully',
         ] , Response::HTTP_OK);
     }
 }

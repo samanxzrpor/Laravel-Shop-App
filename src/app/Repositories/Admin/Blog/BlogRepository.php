@@ -13,17 +13,19 @@ class BlogRepository implements BlogRepositoryInterface
 
 
     /**
+     * @param string $orderBy
+     * @param string $orderType
      * @return mixed
      */
-    public function all() :mixed
+    public function all(string $orderBy = 'created_at')
     {
-        return Blog::orderByDesc('created_at')->paginate(20);
+        return Blog::orderByDesc($orderBy)
+            ->paginate(20);
     }
 
 
     public function store(RequestInterface $request): Blog
     {
-        $form = new Form
         $fields = $request->validated();
 
         $blog = Blog::create([

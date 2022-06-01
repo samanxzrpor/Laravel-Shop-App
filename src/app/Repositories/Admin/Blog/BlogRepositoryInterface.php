@@ -7,7 +7,7 @@ use App\Models\Blog;
 
 interface BlogRepositoryInterface
 {
-    public function all() :mixed;
+    public function all(string $orderBy) ;
 
     public function store(RequestInterface $request): Blog;
 

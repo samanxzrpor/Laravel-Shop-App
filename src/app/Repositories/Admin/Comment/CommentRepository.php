@@ -2,7 +2,6 @@
 
 namespace App\Repositories\Admin\Comment;
 
-use App\Http\Requests\RequestInterface;
 use App\Models\Comment;
 
 class CommentRepository implements CommentRepositoryInterface

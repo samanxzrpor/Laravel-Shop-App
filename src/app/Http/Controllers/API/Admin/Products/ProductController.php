@@ -30,7 +30,7 @@ class ProductController extends Controller
      */
     public function index(): JsonResponse
     {
-        $products = $this->productRepository->all();
+        $products = $this->productRepository->all($this->setOrderBy());
 
         return Response::json([
             'products' => $products

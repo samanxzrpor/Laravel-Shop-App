@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API\Admin\Categories;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\Admin\Categories\StoreCategoryRequest;
 use App\Models\Category;
-use App\Repositories\Admin\Comment\CommentRepositoryInterface;
+use App\Repositories\Admin\Category\CategoryRepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Response;
 use Symfony\Component\HttpFoundation\Response as StatusResponse;
@@ -14,10 +14,10 @@ use Symfony\Component\HttpFoundation\Response as StatusResponse;
 class CategoryController extends Controller
 {
 
-    private CommentRepositoryInterface $categoryRepository;
+    private CategoryRepositoryInterface $categoryRepository;
 
 
-    public function __construct(CommentRepositoryInterface $categoryRepository)
+    public function __construct(CategoryRepositoryInterface $categoryRepository)
     {
         $this->categoryRepository = $categoryRepository;
     }

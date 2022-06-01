@@ -15,6 +15,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 
+
+Route::fallback(function(){
+    return abort(404);
+});
+
+
 # Authentication Routes
 include __DIR__ . '/auth/auth.php';
 

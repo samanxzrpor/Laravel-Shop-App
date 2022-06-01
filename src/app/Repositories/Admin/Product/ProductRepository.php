@@ -19,17 +19,20 @@ class ProductRepository implements ProductRepositoryInterface
 
 
     /**
-     * @return Product
+     * @param string $orderBy
+     * @return mixed
      */
-    public function all() :Product
+    public function all(string $orderBy = 'created_at') :mixed
     {
-        $products = Product::orderByDesc('created_at')
-            ->where('count', '>' , 0)
+        return Product::orderByDesc($orderBy)
             ->paginate(20);
-
-        return $products;
     }
 
+
+    /**
+     * @param string $slug
+     * @return Product
+     */
     public function findBySlug(string $slug) :Product
     {
         return Product::where('slug' , $slug)

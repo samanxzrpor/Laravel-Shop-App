@@ -32,7 +32,7 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $blogs = $this->blogRepository->all();
+        $blogs = $this->blogRepository->all($this->setOrderBy());
 
         return Response::json([
             'blogs' => $blogs,

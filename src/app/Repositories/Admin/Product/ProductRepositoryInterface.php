@@ -4,12 +4,11 @@ namespace App\Repositories\Admin\Product;
 
 use App\Http\Requests\RequestInterface;
 use App\Models\Product;
-use Exception;
 use Illuminate\Database\Eloquent\Model;
 
 interface ProductRepositoryInterface
 {
-    public function all() :Product;
+    public function all( string $orderBy ) :mixed;
 
     public function findBySlug(string $slug) : Product;
 
