@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\API\Admin\Categories\CategoryController;
+use App\Http\Controllers\API\Admin\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('categories')->middleware(['role:Super Admin|Admin'])->group(function () {

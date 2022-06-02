@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\API\Admin\Users;
+namespace App\Http\Controllers\API\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\API\Admin\Users\ChangeUserRoleRequest;
 use App\Models\User;
 use App\Repositories\Admin\User\UserRepositoryInterface;
 use Illuminate\Http\JsonResponse;
-use \Illuminate\Support\Facades\Response as StatusResponse;
-use Symfony\Component\HttpFoundation\Response;
-
+use Illuminate\Support\Facades\Response ;
+use Symfony\Component\HttpFoundation\Response as StatusResponse;
 
 
 class UserController extends Controller
@@ -31,9 +31,9 @@ class UserController extends Controller
     {
         $users = $this->userRepository->all($this->setOrderBy());
 
-        return StatusResponse::json([
+        return Response::json([
             'users' => $users,
-        ] , Response::HTTP_OK);
+        ] , StatusResponse::HTTP_OK);
     }
 
 
@@ -47,9 +47,9 @@ class UserController extends Controller
     {
         $user->delete();
 
-        return StatusResponse::json([
+        return Response::json([
             'message' => 'User deleted successfully',
-        ] , Response::HTTP_OK);
+        ] , StatusResponse::HTTP_OK);
     }
 
 
@@ -57,8 +57,18 @@ class UserController extends Controller
     {
         $this->userRepository->block($user);
 
-        return StatusResponse::json([
+        return Response::json([
             'message' => 'User Blocked successfully',
-        ] , Response::HTTP_OK);
+        ] , StatusResponse::HTTP_OK);
+    }
+
+
+    public function changeUserRole(User $user , ChangeUserRoleRequest $request)
+    {
+        $this->userRepository->changeRole($user , $request);
+
+        return Response::json([
+            'message' => 'User Role Changed Successfully',
+        ] , StatusResponse::HTTP_OK);
     }
 }

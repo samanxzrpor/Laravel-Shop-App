@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API\Admin\Products;
+namespace App\Http\Controllers\API\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\Admin\Products\StoreProductRequest;
@@ -8,8 +8,8 @@ use App\Http\Requests\API\Admin\Products\UpdateProductRequest;
 use App\Models\Product;
 use App\Repositories\Admin\Product\ProductRepositoryInterface;
 use Illuminate\Http\JsonResponse;
-use \Symfony\Component\HttpFoundation\Response as StatusResponse;
 use Illuminate\Support\Facades\Response;
+use Symfony\Component\HttpFoundation\Response as StatusResponse;
 
 
 class ProductController extends Controller

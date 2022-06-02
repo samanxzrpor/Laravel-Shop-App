@@ -26,7 +26,7 @@ return new class extends Migration
             $table->text('gallery_url');
             $table->integer('count')
                 ->default(0);
-            $table->decimal('price' , 8 ,2);
+            $table->decimal('price' , 12 ,2);
 
             $table->foreignId('user_id')
                 ->constrained()

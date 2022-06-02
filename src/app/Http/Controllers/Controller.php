@@ -14,6 +14,6 @@ class Controller extends BaseController
 
     protected function setOrderBy()
     {
-        return $_GET['orderBy'] ?? 'created_at';
+        return request()->get('orderBy') ?? 'created_at';
     }
 }

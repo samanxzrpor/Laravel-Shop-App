@@ -18,6 +18,9 @@ return new class extends Migration
             $table->text('body');
             $table->enum('block' , ['yes' , 'no'])
                 ->default('no');
+            $table->foreignId('user_id')
+                ->constrained()
+                ->cascadeOnDelete();
             $table->string('commentable_type');
             $table->unsignedBigInteger('commentable_id');
             $table->timestamps();

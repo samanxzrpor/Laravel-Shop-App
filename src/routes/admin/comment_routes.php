@@ -1,7 +1,7 @@
 <?php
 
+use App\Http\Controllers\API\Admin\CommentController;
 use Illuminate\Support\Facades\Route;
-use \App\Http\Controllers\API\Admin\Comments\CommentController;
 
 Route::prefix('comments')->middleware(['role:Super Admin|Admin'])->group(function () {
 

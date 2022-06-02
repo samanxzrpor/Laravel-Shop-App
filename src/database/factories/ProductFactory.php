@@ -27,7 +27,7 @@ class ProductFactory extends Factory
             'thumbnail_url' => $this->faker->imageUrl(),
             'gallery_url' => $this->faker->imageUrl(),
             'count' => 25 ,
-            'price' => $this->faker->randomNumber(),
+            'price' => $this->faker->randomFloat(),
             'user_id' => User::factory()->create()->id,
             'cat_id' => Category::factory()->create()->id,
             'brand_id' => Brand::factory()->create()->id

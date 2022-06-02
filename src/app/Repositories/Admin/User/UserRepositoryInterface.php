@@ -11,4 +11,6 @@ interface UserRepositoryInterface
     public function all(string $orderBy);
 
     public function block(User $user);
+
+    public function changeRole(User $user , RequestInterface $request);
 }

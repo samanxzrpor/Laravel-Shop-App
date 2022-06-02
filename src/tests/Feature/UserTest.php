@@ -2,6 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Models\Comment;
+use App\Models\Review;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -19,4 +22,34 @@ class UserTest extends TestCase
     }
 
 
+    public function testOrderingByActivation()
+    {
+        $comments = Comment::factory(100)->create();
+
+        $reviews = Review::factory(100)->create();
+
+        $response = $this->authentication()->getJson(route('users.index' , ['orderBy' => 'activation']));
+    }
+
+
+    public function testChangeUserRoleByTrueRoles()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->authentication()->postJson(route('users.changeRole' , [$user]) ,[
+            'role' => 'Admin'
+        ])->assertSuccessful();
+        $this->assertDatabaseHas('model_has_roles' , ['model_id' => $user->id]);
+    }
+
+
+    public function testChangeUserRoleByWrongRoles()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->authentication()->postJson(route('users.changeRole' , [$user]) ,[
+            'role' => 'Adminn'
+        ]);
+        $response->assertJsonValidationErrors(['role']);
+    }
 }
