@@ -19,7 +19,7 @@ class UserRepository implements UserRepositoryInterface
 
     /**
      * @param string $orderBy
-     * @return LengthAwarePaginator
+     * @return array|LengthAwarePaginator
      */
     public function all(string $orderBy = 'created_at')
     {
@@ -30,7 +30,7 @@ class UserRepository implements UserRepositoryInterface
             return $this->orderByCommentCount();
 
         if ($orderBy === 'most_review')
-            $this->orderByReviewCount();
+            return $this->orderByReviewCount();
 
         return User::orderByDesc($orderBy)
             ->paginate(20);
@@ -54,7 +54,7 @@ class UserRepository implements UserRepositoryInterface
     /**
      * @return LengthAwarePaginator
      */
-    protected function orderByMostPurchases()
+    protected function orderByMostPurchases(): LengthAwarePaginator
     {
         return User::orderByDesc(
             Order::select('total_amount')
@@ -69,8 +69,8 @@ class UserRepository implements UserRepositoryInterface
 
     /**
      * @param User $user
-     * @param string $role
-     * @return JsonResponse|void
+     * @param RequestInterface $request
+     * @return void
      */
     public function changeRole(User $user , RequestInterface $request)
     {
@@ -80,24 +80,36 @@ class UserRepository implements UserRepositoryInterface
     }
 
 
+    /**
+     * @return array
+     */
     protected function orderByCommentCount()
     {
-        return DB::select("SELECT users.email, COUNT(DISTINCT comments.id) as comments
-        FROM users
-        JOIN comments on comments.user_id = users.id
-        GROUP BY users.email
-        HAVING MAX(comments.created_at) >= last_day(now()) + interval 1 day - interval 2 month
-        ORDER BY comments DESC");
+        return DB::select($this->sqlCommandForOrdering('users' , 'comments'));
     }
 
 
+    /**
+     * @return array
+     */
     protected function orderByReviewCount()
     {
-        return DB::select("SELECT users.email, COUNT(DISTINCT reviews.id) as reviews
-        FROM users
-        JOIN reviews on reviews.user_id = users.id
-        GROUP BY users.email
-        HAVING MAX(reviews.created_at) >= last_day(now()) + interval 1 day - interval 2 month
-        ORDER BY reviews DESC");
+        return DB::select($this->sqlCommandForOrdering('users' , 'reviews'));
+    }
+
+
+    /**
+     * @param string $table1
+     * @param string $table2
+     * @return string
+     */
+    protected function sqlCommandForOrdering(string $table1 , string $table2): string
+    {
+        return "SELECT $table1.id , $table1.name , $table1.number , $table1.created_at , $table1.email, COUNT(DISTINCT $table2.id) as $table2
+        FROM $table1
+        JOIN $table2 on $table2.user_id = users.id
+        GROUP BY $table1.id , $table1.name , $table1.number , $table1.created_at , $table1.email
+        HAVING MAX($table2.created_at) >= last_day(now()) + interval 1 day - interval 2 month
+        ORDER BY $table2 DESC";
     }
 }
