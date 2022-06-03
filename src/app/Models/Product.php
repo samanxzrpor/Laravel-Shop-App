@@ -43,4 +43,9 @@ class Product extends Model
     {
         return $this->hasOne(ProductMeta::class);
     }
+
+    public function coupons()
+    {
+        return $this->belongsToMany(Coupon::class , 'coupon_product');
+    }
 }

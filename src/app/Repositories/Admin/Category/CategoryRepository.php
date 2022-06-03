@@ -8,7 +8,7 @@ use App\Models\Category;
 class CategoryRepository implements CategoryRepositoryInterface
 {
 
-    public function all()
+    public function all() :mixed
     {
         return Category::orderByDesc('created_at')
             ->paginate(20);

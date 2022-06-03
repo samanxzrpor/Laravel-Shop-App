@@ -17,30 +17,19 @@ use Symfony\Component\HttpFoundation\Response as StatusResponse;
 class UserRepository implements UserRepositoryInterface
 {
 
-    /**
-     * @param string $orderBy
-     * @return array|LengthAwarePaginator
-     */
     public function all(string $orderBy = 'created_at')
     {
-        if ($orderBy === 'purchase')
-            return $this->orderByMostPurchases();
+        $this->orderByMostPurchases($orderBy);
 
-        if ($orderBy === 'most_comment')
-            return $this->orderByCommentCount();
+        $this->orderByCommentCount($orderBy);
 
-        if ($orderBy === 'most_review')
-            return $this->orderByReviewCount();
+        $this->orderByReviewCount($orderBy);
 
         return User::orderByDesc($orderBy)
             ->paginate(20);
     }
 
 
-    /**
-     * @param User $user
-     * @return void
-     */
     public function block(User $user)
     {
         $block = $user->block === 'no' ? 'yes' : 'no';
@@ -51,27 +40,6 @@ class UserRepository implements UserRepositoryInterface
     }
 
 
-    /**
-     * @return LengthAwarePaginator
-     */
-    protected function orderByMostPurchases(): LengthAwarePaginator
-    {
-        return User::orderByDesc(
-            Order::select('total_amount')
-                ->whereColumn('user_id' , 'users.id')
-                ->orderBy('total_amount', 'ASC')
-            )->addSelect([
-            'buy_price' => Order::select('total_amount')->whereColumn('user_id' , 'users.id')->orderBy('total_amount', 'ASC')
-            ])->get();
-
-    }
-
-
-    /**
-     * @param User $user
-     * @param RequestInterface $request
-     * @return void
-     */
     public function changeRole(User $user , RequestInterface $request)
     {
         $role = $request->validated()['role'];
@@ -80,29 +48,32 @@ class UserRepository implements UserRepositoryInterface
     }
 
 
-    /**
-     * @return array
-     */
-    protected function orderByCommentCount()
+    protected function orderByMostPurchases(string $orderBy)
     {
-        return DB::select($this->sqlCommandForOrdering('users' , 'comments'));
+        if ($orderBy === 'purchase') {
+            return User::orderByDesc(
+                Order::select('total_amount')
+                    ->whereColumn('user_id' , 'users.id')
+                    ->orderBy('total_amount', 'ASC')
+            )->get();
+        }
     }
 
 
-    /**
-     * @return array
-     */
-    protected function orderByReviewCount()
+    protected function orderByCommentCount(string $orderBy)
     {
-        return DB::select($this->sqlCommandForOrdering('users' , 'reviews'));
+        if ($orderBy === 'most_comment')
+            return DB::select($this->sqlCommandForOrdering('users' , 'comments'));
     }
 
 
-    /**
-     * @param string $table1
-     * @param string $table2
-     * @return string
-     */
+    protected function orderByReviewCount(string $orderBy)
+    {
+        if ($orderBy === 'most_review')
+            return DB::select($this->sqlCommandForOrdering('users' , 'reviews'));
+    }
+
+
     protected function sqlCommandForOrdering(string $table1 , string $table2): string
     {
         return "SELECT $table1.id , $table1.name , $table1.number , $table1.created_at , $table1.email, COUNT(DISTINCT $table2.id) as $table2

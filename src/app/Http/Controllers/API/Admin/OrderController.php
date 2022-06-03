@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\API\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\Admin\Order\UserRepositoryInterface;
+use App\Repositories\Admin\Order\OrderRepositoryInterface;
 use Illuminate\Support\Facades\Response;
 use Symfony\Component\HttpFoundation\Response as StatusResponse;
 
 class OrderController extends Controller
 {
 
-    private UserRepositoryInterface $orderRepository;
+    private OrderRepositoryInterface $orderRepository;
 
-    public function __construct(UserRepositoryInterface $orderRepository)
+    public function __construct(OrderRepositoryInterface $orderRepository)
     {
 
         $this->orderRepository = $orderRepository;

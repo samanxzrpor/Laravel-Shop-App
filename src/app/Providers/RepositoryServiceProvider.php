@@ -8,6 +8,8 @@ use App\Repositories\Admin\Category\CategoryRepository;
 use App\Repositories\Admin\Category\CategoryRepositoryInterface;
 use App\Repositories\Admin\Comment\CommentRepository;
 use App\Repositories\Admin\Comment\CommentRepositoryInterface;
+use App\Repositories\Admin\Coupon\CouponRepository;
+use App\Repositories\Admin\Coupon\CouponRepositoryInterface;
 use App\Repositories\Admin\Order\OrderRepository;
 use App\Repositories\Admin\Order\OrderRepositoryInterface;
 use App\Repositories\Admin\Product\ProductRepository;
@@ -42,5 +44,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(CommentRepositoryInterface::class , CommentRepository::class);
         $this->app->bind(OrderRepositoryInterface::class , OrderRepository::class);
         $this->app->bind(UserRepositoryInterface::class , UserRepository::class);
+        $this->app->bind(CouponRepositoryInterface::class , CouponRepository::class);
     }
 }

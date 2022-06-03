@@ -12,12 +12,7 @@ class BlogRepository implements BlogRepositoryInterface
 {
 
 
-    /**
-     * @param string $orderBy
-     * @param string $orderType
-     * @return mixed
-     */
-    public function all(string $orderBy = 'created_at')
+    public function all(string $orderBy = 'created_at') :mixed
     {
         return Blog::orderByDesc($orderBy)
             ->paginate(20);

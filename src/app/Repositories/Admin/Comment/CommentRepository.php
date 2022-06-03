@@ -7,7 +7,7 @@ use App\Models\Comment;
 class CommentRepository implements CommentRepositoryInterface
 {
 
-    public function all()
+    public function all() :mixed
     {
         return Comment::orderByDesc('created_at')
             ->paginate(20);

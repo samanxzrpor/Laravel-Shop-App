@@ -13,18 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('coupons', function (Blueprint $table) {
             $table->id();
-
-            $table->integer('total_amount');
-            $table->integer('ref_code');
-
-            $table->enum('status' , ['waiting' , 'processing' , 'finished'])
-                ->default('waiting');
-
-            $table->foreignId('user_id')
-                ->constrained();
-
+            $table->string('coupon_code');
+            $table->dateTime('expire_at');
             $table->timestamps();
         });
     }
@@ -36,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('coupon');
     }
 };

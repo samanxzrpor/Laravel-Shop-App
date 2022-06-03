@@ -43,4 +43,10 @@ Route::prefix('admin')
 
         # Admin Comments Dashboard Processing
         include __DIR__ . '/admin/comment_routes.php';
+
+        # Admin Orders Dashboard Processing
+        include __DIR__ . '/admin/order_routes.php';
+
+        # Admin Coupons Dashboard Processing
+        include __DIR__ . '/admin/coupon_routes.php';
     });

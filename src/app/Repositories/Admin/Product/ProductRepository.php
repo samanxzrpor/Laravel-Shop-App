@@ -18,10 +18,6 @@ class ProductRepository implements ProductRepositoryInterface
     use UploadFiles;
 
 
-    /**
-     * @param string $orderBy
-     * @return mixed
-     */
     public function all(string $orderBy = 'created_at') :mixed
     {
         return Product::orderByDesc($orderBy)
@@ -29,10 +25,6 @@ class ProductRepository implements ProductRepositoryInterface
     }
 
 
-    /**
-     * @param string $slug
-     * @return Product
-     */
     public function findBySlug(string $slug) :Product
     {
         return Product::where('slug' , $slug)
@@ -42,24 +34,35 @@ class ProductRepository implements ProductRepositoryInterface
     }
 
 
-    /**
-     * @param mixed $request
-     * @return Product $product
-     * @throws Exception
-     */
     public function store(RequestInterface $request): Product
     {
-        $gallery_url = [];
         $fields = $request->validated();
 
         $product = Product::create($this->fieldsForCreateAndUpdate($fields));
-
         # Store Meta data for Product
         $this->saveProductMetaData($fields, $product);
-
         # Save Products Thumbnail and Galley
+        $this->storeImageUrl($product , $fields);
+
+        return $product;
+    }
+
+
+    public function update(RequestInterface $request , Model $product): void
+    {
+        $fields = $request->validated();
+        # Update fields That filled
+        $product->update($this->fieldsForCreateAndUpdate($fields));
+        #update Images Url
+        $this->updateImagesUrl($product, $fields);
+    }
+
+
+    public function storeImageUrl(Model $product ,array $fields)
+    {
         if ($product) {
             $thumbnail_url = $this->upload($fields['thumbnail_file']);
+
             foreach ($fields['gallery_file'] as $file) {
                 $gallery_url[] = $this->upload($file);
             }
@@ -68,25 +71,12 @@ class ProductRepository implements ProductRepositoryInterface
                 'gallery_url' => json_encode($gallery_url)
             ]);
         }
-
-        return $product;
     }
 
 
-    /**
-     * @param RequestInterface $request
-     * @param Model $product
-     * @return void
-     * @throws Exception
-     */
-    public function update(RequestInterface $request , Model $product): void
+    protected function updateImagesUrl(Model $product ,array $fields)
     {
-        $gallery_url = [];
-        $fields = $request->validated();
-
-        $product->update($this->fieldsForCreateAndUpdate($fields));
-
-        if (Str::contains($product->thumbnail_url , $fields['thumbnail_url']->getClientOriginalName))
+        if (!Str::contains($product->thumbnail_url , $fields['thumbnail_url']->getClientOriginalName))
             $thumbnail_url = $this->upload($fields['thumbnail_file']);
 
         foreach (json_decode($product->gallery_url ) as $databasePhoto) {
@@ -96,18 +86,12 @@ class ProductRepository implements ProductRepositoryInterface
             }
         }
 
-        $product->update([
-            'thumbnail_url' => $thumbnail_url,
-            'gallery_url' => json_encode($gallery_url)
-        ]);
+        if ($thumbnail_url)
+            $product->update(['thumbnail_url' => $thumbnail_url,]);
+        if ($gallery_url)
+            $product->update(['gallery_url' => json_encode($gallery_url)]);
     }
 
-
-    /**
-     * @param array $fields
-     * @param Product $product
-     * @return void
-     */
     private function saveProductMetaData(array $fields , Product $product): void
     {
         ProductMeta::create([
@@ -120,9 +104,7 @@ class ProductRepository implements ProductRepositoryInterface
         ]);
     }
 
-    /**
-     * @throws Exception
-     */
+
     private function fieldsForCreateAndUpdate(array $fields): array
     {
         return [
