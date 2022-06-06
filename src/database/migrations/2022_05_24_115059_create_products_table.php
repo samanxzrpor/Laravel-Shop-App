@@ -27,7 +27,7 @@ return new class extends Migration
             $table->integer('count')
                 ->default(0);
             $table->decimal('price' , 12 ,2);
-            $table->decimal('discount_price' , 12 ,2);
+            $table->decimal('discount_price' , 12 ,2)->nullable();
 
             $table->foreignId('user_id')
                 ->constrained()

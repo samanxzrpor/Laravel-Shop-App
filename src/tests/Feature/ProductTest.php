@@ -2,14 +2,18 @@
 
 namespace Tests\Feature;
 
+use App\Events\ReduceProductToLimit;
+use App\Listeners\SendNotifyToLimitProduct;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductMeta;
+use App\Notifications\SendLimitProductNotify;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
-use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class ProductTest extends TestCase
@@ -142,7 +146,6 @@ class ProductTest extends TestCase
 
     public function testSerachProductBySlug()
     {
-        $this->withoutExceptionHandling();
         $product = Product::factory()->create();
         ProductMeta::factory()->create([
             'product_id' => $product->id
@@ -165,6 +168,17 @@ class ProductTest extends TestCase
         copy($stub, $path);
 
         return new UploadedFile($path, $name, 'image/png', null, true);
+    }
+
+
+    public function testSendNotifyWhenProductCountGetToLimit()
+    {
+        $this->withoutExceptionHandling();
+
+        Event::fake([
+            ReduceProductToLimit::class
+        ]);
+        Event::assertDispatched(ReduceProductToLimit::class);
     }
 
 }

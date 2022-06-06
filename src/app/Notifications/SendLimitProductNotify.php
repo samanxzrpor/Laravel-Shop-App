@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Models\Product;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -11,6 +12,17 @@ class SendLimitProductNotify extends Notification
 {
     use Queueable;
 
+    private Product $product;
+
+
+    /**
+     * Create a new notification instance.
+     * @return void
+     */
+    public function __construct(Product $product)
+    {
+        $this->product = $product;
+    }
 
     /**
      * Get the notification's delivery channels.
@@ -32,8 +44,8 @@ class SendLimitProductNotify extends Notification
     public function toMail(mixed $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->line($notifiable->product . 'Count Reduce To Limit if U Want Charge It')
-                    ->action('Product Page', route('products.show' , [$notifiable->product]));
+                    ->line($this->product->title . 'Count Reduce To Limit if U Want Charge It')
+                    ->action('Product Page', route('products.show' , [$this->product]));
     }
 
 }

@@ -14,5 +14,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/test' , function (){
-    return 'HI';
+    $product = \App\Models\Product::factory()->create();
+    \Illuminate\Support\Facades\Event::dispatch(new \App\Events\ReduceProductToLimit($product));
 });

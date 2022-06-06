@@ -3,11 +3,13 @@
 namespace App\Listeners;
 
 use App\Events\ReduceProductToLimit;
+use App\Models\User;
 use App\Notifications\SendLimitProductNotify;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
+use Spatie\Permission\Models\Role;
 
 class SendNotifyToLimitProduct implements ShouldQueue
 {
@@ -20,6 +22,11 @@ class SendNotifyToLimitProduct implements ShouldQueue
      */
     public function handle(ReduceProductToLimit $event)
     {
-        Notification::sendNow([config('permission.super_admin_email')] , new SendLimitProductNotify($event->product));
+        $adminUsers = [];
+
+        $admins = User::role('Admin')->get();
+        $superAdmin = User::role('Super Admin')->get();
+
+        Notification::sendNow($superAdmin  , new SendLimitProductNotify($event->product));
     }
 }
