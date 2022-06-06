@@ -111,6 +111,7 @@ class ProductRepository implements ProductRepositoryInterface
             'title' => $fields['title'],
             'slug'  => Str::slug($fields['title']) . random_int(10 , 999),
             'price' => $fields['price'],
+            'discount_price' => $fields['discount_price'],
             'count' => $fields['count'],
             'short_desc' => $fields['short_desc'],
             'description' => $fields['description'],

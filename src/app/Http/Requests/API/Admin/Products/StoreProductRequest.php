@@ -27,6 +27,7 @@ class StoreProductRequest extends FormRequest implements RequestInterface
         return [
             'title' => ['required' , 'min:10' , 'max:80'],
             'price' => ['required' , 'integer'],
+            'discount_price' => ['required' , 'integer'],
             'count' => ['required' , 'integer'],
             'short_desc' => ['required' , 'min:50' , 'max:524'],
             'description' => ['required' , 'min:100'],
