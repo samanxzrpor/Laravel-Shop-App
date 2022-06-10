@@ -25,10 +25,9 @@ class ProductRepository implements ProductRepositoryInterface
     }
 
 
-    public function findBySlug(string $slug) :Product
+    public function find(Product $product) :Product
     {
-        return Product::where('slug' , $slug)
-            ->where('count' , '>' , 0)
+        return Product::findOrFail($product->id)
             ->with('productMeta')
             ->first();
     }
@@ -58,7 +57,7 @@ class ProductRepository implements ProductRepositoryInterface
     }
 
 
-    public function storeImageUrl(Model $product ,array $fields)
+    public function storeImageUrl(Product $product ,array $fields)
     {
         if ($product) {
             $thumbnail_url = $this->upload($fields['thumbnail_file']);
@@ -68,7 +67,7 @@ class ProductRepository implements ProductRepositoryInterface
             }
             $product->update([
                 'thumbnail_url' => $thumbnail_url,
-                'gallery_url' => json_encode($gallery_url)
+                'gallery_url' => $gallery_url
             ]);
         }
     }
@@ -111,7 +110,7 @@ class ProductRepository implements ProductRepositoryInterface
             'title' => $fields['title'],
             'slug'  => Str::slug($fields['title']) . random_int(10 , 999),
             'price' => $fields['price'],
-            'discount_price' => $fields['discount_price'],
+            'discount_price' => $fields['discount_price'] ?? null,
             'count' => $fields['count'],
             'short_desc' => $fields['short_desc'],
             'description' => $fields['description'],

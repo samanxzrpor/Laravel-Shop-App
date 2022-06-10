@@ -15,6 +15,17 @@ class Product extends Model
 
 
 
+    public function setGallery_urlAttribute($value)
+    {
+        $this->attributes['gallery_url'] = json_encode($value);
+    }
+
+    public function getGallery_urlAttribute($value)
+    {
+        return $this->attributes['gallery_url'] = json_decode($value, true);
+    }
+
+
     public function tags()
     {
         return $this->morphToMany(Tag::class , 'taggable');

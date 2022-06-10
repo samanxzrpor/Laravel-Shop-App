@@ -10,7 +10,7 @@ interface ProductRepositoryInterface
 {
     public function all( string $orderBy ) :mixed;
 
-    public function findBySlug(string $slug) : Product;
+    public function find(Product $product) : Product;
 
     public function store(RequestInterface $request): Product;
 

@@ -75,6 +75,7 @@ class ProductTest extends TestCase
 
     public function testCreateNewProductWithMetaData()
     {
+        $this->withoutExceptionHandling();
         $category = Category::create([
             'title' => 'New Category'
         ]);
@@ -147,6 +148,7 @@ class ProductTest extends TestCase
     public function testSerachProductBySlug()
     {
         $product = Product::factory()->create();
+
         ProductMeta::factory()->create([
             'product_id' => $product->id
         ]);
@@ -171,14 +173,14 @@ class ProductTest extends TestCase
     }
 
 
-    public function testSendNotifyWhenProductCountGetToLimit()
-    {
-        $this->withoutExceptionHandling();
-
-        Event::fake([
-            ReduceProductToLimit::class
-        ]);
-        Event::assertDispatched(ReduceProductToLimit::class);
-    }
+//    public function testSendNotifyWhenProductCountGetToLimit()
+//    {
+//        $this->withoutExceptionHandling();
+//
+//        Event::fake([
+//            ReduceProductToLimit::class
+//        ]);
+//        Event::assertDispatched(ReduceProductToLimit::class);
+//    }
 
 }

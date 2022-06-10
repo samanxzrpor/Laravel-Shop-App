@@ -61,7 +61,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        $product = $this->productRepository->findBySlug($product->slug);
+        $product = $this->productRepository->find($product);
 
         return Response::json([
             'product' => $product
