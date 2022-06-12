@@ -22,11 +22,12 @@ class SendNotifyToLimitProduct implements ShouldQueue
      */
     public function handle(ReduceProductToLimit $event)
     {
-        $adminUsers = [];
-
         $admins = User::role('Admin')->get();
-        $superAdmin = User::role('Super Admin')->get();
+        if ($admins->count() > 0)
+            Notification::sendNow($admins , new SendLimitProductNotify($event->product));
 
-        Notification::sendNow($superAdmin  , new SendLimitProductNotify($event->product));
+        $superAdmin = User::role('Super Admin')->get();
+        if ($superAdmin->count() > 0)
+            Notification::sendNow($superAdmin , new SendLimitProductNotify($event->product));
     }
 }

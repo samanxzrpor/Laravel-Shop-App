@@ -15,12 +15,12 @@ class Product extends Model
 
 
 
-    public function setGallery_urlAttribute($value)
+    public function setGalleryUrlAttribute($value)
     {
         $this->attributes['gallery_url'] = json_encode($value);
     }
 
-    public function getGallery_urlAttribute($value)
+    public function getGalleryUrlAttribute($value)
     {
         return $this->attributes['gallery_url'] = json_decode($value, true);
     }
