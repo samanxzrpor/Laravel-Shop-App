@@ -24,10 +24,10 @@ return new class extends Migration
 
             $table->text('description');
             $table->text('gallery_url');
-            $table->integer('count')
+            $table->bigInteger('count')
                 ->default(0);
-            $table->decimal('price' , 12 ,2);
-            $table->decimal('discount_price' , 12 ,2)->nullable();
+            $table->bigInteger('price');
+            $table->bigInteger('discount_price')->nullable();
 
             $table->foreignId('user_id')
                 ->constrained()
