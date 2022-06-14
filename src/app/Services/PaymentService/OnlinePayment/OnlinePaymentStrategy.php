@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\PaymentService;
+namespace App\Services\PaymentService\OnlinePayment;
 
 use App\Services\PaymentService\Interfaces\OnlinePaymentInterface;
 

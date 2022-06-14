@@ -19,5 +19,5 @@ Route::get('/test' , function (){
 
 //    \App\Models\Product::factory()->create();
 
-
+    dd((new \App\Services\PaymentService\OnlinePayment\OnlinePaymentStrategy(new \App\Services\PaymentService\OnlinePayment\IDPayService\IDPayPaymentService()))->pay());
 });
