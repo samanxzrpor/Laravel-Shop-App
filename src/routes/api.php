@@ -49,4 +49,14 @@ Route::prefix('admin')
 
         # Admin Coupons Dashboard Processing
         include __DIR__ . '/admin/coupon_routes.php';
+
+    });
+
+
+Route::prefix('shop')
+    ->group(function (){
+
+        # Payment Shop Processing
+        include __DIR__ . '/shop/payment_route.php';
+
     });

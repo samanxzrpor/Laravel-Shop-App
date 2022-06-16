@@ -2,45 +2,53 @@
 
 namespace App\Services\PaymentService\OnlinePayment\ZarinpalService;
 
+use App\Http\Requests\RequestInterface;
+use App\Models\Order;
 use App\Services\PaymentService\Interfaces\OnlinePaymentInterface;
 
 
 class ZarinpalPaymentService implements OnlinePaymentInterface
 {
 
-    private const IDPAY_URL = 'https://api.idpay.ir/v1.1/payment';
-
-    private const MERCHANT_ID = '';
-
-
-    public function pay()
+    public function pay(RequestInterface $request , Order $order)
     {
-        $Amount 		= 100;
-        $Email 			= "";
-        $Mobile 		= "";
-        $CallbackURL 	= "http://127.0.0.1:8080/VerifyPayment.php";
-        $ZarinGate 		= false;
-        $SandBox 		= false;
-
         $zp 	= new Zarinpal();
         $result = $zp->request(
-            self::MERCHANT_ID ,
-            $Amount,
+            config('payments.api_keys.zarinpal') ,
+            $request->input('amount'),
             "تراکنش زرین پال",
-            $Email,
-            $Mobile,
-            $CallbackURL,
+            $request->input('email'),
+            $request->input('mobile'),
+            route('payment.zarinpal_callback'),
             true,
-            $ZarinGate);
+            false);
 
+
+        if (isset($result["Status"]) && $result["Status"] === 100)
+            $zp->redirect($result["StartPay"]);
+
+        return [
+            'message' => $result["Message"],
+            'code' => $result["Status"]
+        ];
+    }
+
+
+    public function verify()
+    {
+        $zp 	= new Zarinpal();
+        $result = $zp->verify(config(), $Amount, true, false);
 
         if (isset($result["Status"]) && $result["Status"] == 100)
         {
-            // Success and redirect to pay
-            $zp->redirect($result["StartPay"]);
+            // Success
+            echo "تراکنش با موفقیت انجام شد";
+            echo "<br />مبلغ : ". $result["Amount"];
+            echo "<br />کد پیگیری : ". $result["RefID"];
+            echo "<br />Authority : ". $result["Authority"];
         } else {
             // error
-            echo "خطا در ایجاد تراکنش";
+            echo "پرداخت ناموفق";
             echo "<br />کد خطا : ". $result["Status"];
             echo "<br />تفسیر و علت خطا : ". $result["Message"];
         }

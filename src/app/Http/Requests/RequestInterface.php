@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use phpDocumentor\Reflection\Types\Boolean;
 
 interface RequestInterface
 {

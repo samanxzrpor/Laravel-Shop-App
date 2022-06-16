@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
 
             $table->integer('total_amount');
-            $table->integer('ref_code');
 
             $table->enum('status' , ['waiting' , 'processing' , 'finished'])
                 ->default('waiting');

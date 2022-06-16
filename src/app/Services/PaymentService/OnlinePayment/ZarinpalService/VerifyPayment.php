@@ -5,7 +5,7 @@ require_once("Zarinpal.php");
 
 class VerifyPayment
 {
-    public function verify($payment)
+    public function verify()
     {
         $MerchantID 	= "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
         $Amount 		= 100;
@@ -13,7 +13,7 @@ class VerifyPayment
         $SandBox 		= false;
 
         $zp 	= new Zarinpal();
-        $result = $zp->verify($MerchantID, $Amount, $SandBox, $ZarinGate);
+        $result = $zp->verify($MerchantID, $Amount, true, false);
 
         if (isset($result["Status"]) && $result["Status"] == 100)
         {
