@@ -15,9 +15,6 @@ use Illuminate\Support\Str;
 class ProductRepository implements ProductRepositoryInterface
 {
 
-    use UploadFiles;
-
-
     public function all(string $orderBy = 'created_at') :mixed
     {
         return Product::orderByDesc($orderBy)

@@ -15,16 +15,7 @@ use Illuminate\Routing\Redirector;
 class IDPayPaymentService implements OnlinePaymentInterface
 {
 
-    private PaymentRepositoryInterface $paymentRepository;
-
-
-    public function __construct(PaymentRepositoryInterface $paymentRepository)
-    {
-        $this->paymentRepository = $paymentRepository;
-    }
-
-
-    public function pay(RequestInterface $request , Order $order): Redirector|RedirectResponse|Application
+    public function pay(RequestInterface $request , Order $order): array|Redirector|RedirectResponse|Application
     {
         $params = $this->setPaymentsParams($request , $order);
 
@@ -42,7 +33,7 @@ class IDPayPaymentService implements OnlinePaymentInterface
         curl_close($ch);
 
         if ($response->error_code)
-            return $response->error_message;
+            return ['error_message' => $response->error_message , 'error_code' => $response->error_code];
 
         return redirect($response->link);
     }
@@ -71,8 +62,7 @@ class IDPayPaymentService implements OnlinePaymentInterface
         if ($response->error_code)
             return $response->error_message;
 
-        $this->paymentRepository->store($response);
-        return $response->payment;
+        return $response;
     }
 
 
