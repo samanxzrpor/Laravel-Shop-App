@@ -17,9 +17,7 @@ use Symfony\Component\HttpFoundation\Response as StatusResponse;
 class PaymentController extends Controller
 {
 
-
     private PaymentRepositoryInterface $paymentRepository;
-
 
     public function __construct(PaymentRepositoryInterface $paymentRepository)
     {

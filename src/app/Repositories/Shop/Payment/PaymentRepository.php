@@ -7,6 +7,7 @@ use App\Models\Payment;
 class PaymentRepository implements PaymentRepositoryInterface
 {
 
+
     public function store(mixed $response)
     {
         Payment::create([

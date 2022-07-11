@@ -16,12 +16,14 @@ use App\Repositories\Admin\Product\ProductRepository;
 use App\Repositories\Admin\Product\ProductRepositoryInterface;
 use App\Repositories\Admin\User\UserRepository;
 use App\Repositories\Admin\User\UserRepositoryInterface;
+use App\Repositories\Shop\Payment\PaymentRepository;
+use App\Repositories\Shop\Payment\PaymentRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 
 
 class RepositoryServiceProvider extends ServiceProvider
 {
-    
+
     /**
      * Register services.
      *
@@ -47,5 +49,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(OrderRepositoryInterface::class , OrderRepository::class);
         $this->app->bind(UserRepositoryInterface::class , UserRepository::class);
         $this->app->bind(CouponRepositoryInterface::class , CouponRepository::class);
+        $this->app->bind(PaymentRepositoryInterface::class , PaymentRepository::class);
     }
 }

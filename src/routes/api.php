@@ -59,4 +59,7 @@ Route::prefix('shop')
         # Payment Shop Processing
         include __DIR__ . '/shop/payment_route.php';
 
+        # Payment Shop Processing
+        include __DIR__ . '/shop/product_routes.php';
+
     });
