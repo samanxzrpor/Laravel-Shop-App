@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\Admin\Products\StoreProductRequest;
 use App\Http\Requests\API\Admin\Products\UpdateProductRequest;
+use App\Http\Resources\Products\ProductCollection;
 use App\Models\Product;
 use App\Repositories\Admin\Product\ProductRepositoryInterface;
 use Illuminate\Http\JsonResponse;
@@ -31,9 +32,10 @@ class ProductController extends Controller
     public function index(): JsonResponse
     {
         $products = $this->productRepository->all($this->setOrderBy());
+        $productsCollection = new ProductCollection($products);
 
         return Response::json([
-            'products' => $products
+            'products' => $productsCollection
         ] , StatusResponse::HTTP_OK);
     }
 
